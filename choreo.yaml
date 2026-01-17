@@ -1,0 +1,70 @@
+version: 1.0
+
+endpoints:
+  - name: ultimate-ai-bot
+    port: 8080
+    type: REST
+    networkVisibilities:
+      - Organization
+      - Public
+    context: /
+    healthCheck:
+      path: /health
+      port: 8080
+    scaling:
+      min: 1
+      max: 3
+      targetCPUUtilizationPercentage: 70
+
+build:
+  context: .
+  dockerfile: Dockerfile
+
+deploy:
+  minReplicas: 1
+  maxReplicas: 3
+  autoscaling:
+    cpu: 70
+    memory: 80
+  env:
+    - name: BOT_TOKEN
+      valueFrom: 
+        secretKeyRef:
+          name: bot-secrets
+          key: BOT_TOKEN
+    - name: ADMIN_ID
+      valueFrom:
+        secretKeyRef:
+          name: bot-secrets
+          key: ADMIN_ID
+    - name: OPENAI_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: bot-secrets
+          key: OPENAI_API_KEY
+    - name: LOG_LEVEL
+      value: "info"
+    - name: PORT
+      value: "8080"
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10

@@ -1,0 +1,36 @@
+{
+  "name": "ultimate-ai-bot",
+  "version": "2.0.0",
+  "description": "Ultimate AI Bot with TikTok Downloader and Security Tools",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node scripts/health-check.js",
+    "deploy": "bash scripts/deploy.sh",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "ai",
+    "tiktok",
+    "security"
+  ],
+  "author": "Ultimate AI Bot Team",
+  "license": "MIT",
+  "dependencies": {
+    "telegraf": "^4.16.3",
+    "axios": "^1.6.7",
+    "openai": "^4.28.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "eslint": "^8.56.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
